@@ -77,6 +77,30 @@
   font-style: normal;
 }
 
+.text-sub-blue {
+  font-size: small;
+  color: #507BAE;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text-sub-red {
+  font-size: small;
+  color: #ae5050;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.text-sub-green {
+  font-size: small;
+  color: #55ae50;
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .card-gray-small-padding{
   background: #302F38;
   border-radius: 12px;

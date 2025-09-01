@@ -1,58 +1,132 @@
 "use client";
+import { useAuth } from "./AuthProvider"; // Adjust the import path if needed
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import AllTierLogo from "../../public/AllTier_Logo.webp"
+import { useState } from "react";
+import { FaUser } from "react-icons/fa";
+import { IoLogOutOutline } from "react-icons/io5";
+import { FiMenu, FiX } from "react-icons/fi";
 
-const colors = [
-  "#AE5050",
-  "#AE7F50",
-  "#AEA450",
-  "#64AE50",
-  "#50AEAC",
-  "#5077AE",
-  "#6E50AE",
-];
+interface NavbarProps {
+  color: string;
+}
 
-export default function Navbar() {
-  const [currentColorIndex, setCurrentColorIndex] = useState(0);
-
-  useEffect(() => {
-    const intervalId = setInterval(() => {
-      setCurrentColorIndex((prevIndex) => (prevIndex + 1) % colors.length);
-    }, 10000);
-
-    return () => clearInterval(intervalId);
-  }, []);
+export default function Navbar({ color }: NavbarProps) {
+  const { user, logout } = useAuth();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
     <nav
-      className="shadow-md rounded-b-4xl text-header3-black flex"
+      className="shadow-md rounded-b-4xl text-header3-black flex justify-between items-center p-2 sm:px-20 relative"
       style={{
-        backgroundColor: colors[currentColorIndex],
+        backgroundColor: color,
         transition: "background-color 5s ease-in-out",
       }}
     >
-      <div className="p-2 flex items-center sm:ml-20">
+      {/* Left Items */}
+      <div className="flex items-center">
         <Link href="/" className="hover:brightness-90 transition-opacity">
-          <img src={"/alltier_logo.webp"} className="h-10 w-10"/>
+          <img src={"/alltier_logo.webp"} className="h-10 w-10" alt="AllTier Logo"/>
         </Link>
         <Link href="/" className="hover:text-gray-800 transition-colors ml-2">
           AllTier
         </Link>
       </div>
 
-      <div className="hidden md:flex items-center space-x-6 ml-auto p-2 sm:mr-20">
+      {/* Right Items */}
+      <div className="hidden sm:flex items-center space-x-6">
         <div className="bg-[rgba(255,255,255,0.5)] h-10 w-56 rounded-xl">
-            <input type="text" placeholder="Search..." className="p-2 opacity-100 focus:outline-none"></input>
-
+          <input
+            type="text"
+            placeholder="Search..."
+            className="p-2 w-full bg-transparent focus:outline-none"
+          />
         </div>
-        <Link href="/CreateNewTierListPage" className="hover:text-gray-800 transition-colors">
-          Create TierList
+        <Link
+          href="/CreateNewTierListPage"
+          className="hover:text-gray-800 transition-colors whitespace-nowrap"
+        >
+          Create Tier List
         </Link>
-        <Link href="/about" className="hover:text-gray-800 transition-colors">
-          Username
-        </Link>
+
+        {user ? (
+          <>
+            <Link
+              href="/profile"
+              className="hover:text-gray-800 transition-colors"
+            >
+              <FaUser />
+            </Link>
+            <button
+              onClick={logout}
+              className="hover:text-gray-800 transition-colors"
+              title="Logout"
+            >
+              <IoLogOutOutline size={28} />
+            </button>
+          </>
+        ) : (
+          <Link
+            href="/LoginPage"
+            className="hover:text-gray-800 transition-colors"
+          >
+            <FaUser />
+          </Link>
+        )}
       </div>
+
+      {/* Mobile Menu */}
+      <div className="sm:hidden mr-1">
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+          {isMenuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
+        </button>
+      </div>
+      
+      {isMenuOpen && (
+        <div className="sm:hidden absolute top-full right-2 mt-2 w-56 rounded-xl shadow-lg p-4 z-20"
+        style={{
+        backgroundColor: color,
+        transition: "background-color 5s ease-in-out",
+      }}>
+          <div className="flex flex-col space-y-4">
+            <Link
+              href="/CreateNewTierListPage"
+              className="hover:text-gray-800 transition-colors"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Create Tier List
+            </Link>
+
+            {user ? (
+              <>
+                <Link
+                  href="/profile"
+                  className="hover:text-gray-800 transition-colors"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Profile
+                </Link>
+                <button
+                  onClick={() => {
+                    logout();
+                    setIsMenuOpen(false);
+                  }}
+                  className="text-left hover:text-gray-800 transition-colors"
+                >
+                  Logout
+                </button>
+              </>
+            ) : (
+              <Link
+                href="/LoginPage"
+                className="hover:text-gray-800 transition-colors"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Login
+              </Link>
+            )}
+          </div>
+        </div>
+      )}
     </nav>
   );
 }

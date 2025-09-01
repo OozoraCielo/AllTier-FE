@@ -18,6 +18,7 @@ export default function CreateNewTierListPage() {
   const [categoryInput, setCategoryInput] = useState("");
   const [items, setItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
+  const [validationErrors, setValidationErrors] = useState<number[]>([]);
 
   const nextId = useRef(1);
 
@@ -89,7 +90,7 @@ export default function CreateNewTierListPage() {
     if (!selectedItem || items.length < 2) return;
 
     const currentIndex = items.findIndex((item) => item.id === selectedItem.id);
-    const nextIndex = (currentIndex + 1) % items.length; // Loops back to the start
+    const nextIndex = (currentIndex + 1) % items.length; 
     setSelectedItem(items[nextIndex]);
   }
 
@@ -97,7 +98,7 @@ export default function CreateNewTierListPage() {
     if (!selectedItem || items.length < 2) return;
 
     const currentIndex = items.findIndex((item) => item.id === selectedItem.id);
-    const prevIndex = (currentIndex - 1 + items.length) % items.length; // Loops back to the end
+    const prevIndex = (currentIndex - 1 + items.length) % items.length;
     setSelectedItem(items[prevIndex]);
   }
 
@@ -111,13 +112,37 @@ export default function CreateNewTierListPage() {
     setSelectedItem(null);
   }
 
-  function handleSubmit(){
+  function handleSubmit() {
+    setSelectedItem(null)
+    const errors: number[] = [];
+    items.forEach((item) => {
+      const isNameMissing = !item.name.trim();
 
+      const isCategoryMissing =
+        tierListType === "Rating" &&
+        categoryInput.trim() !== "" &&
+        !item.category;
+
+      if (isNameMissing || isCategoryMissing) {
+        errors.push(item.id);
+      }
+    });
+
+    setValidationErrors(errors);
+
+    if (errors.length === 0 && items.length > 0) {
+      console.log("Submitting tier list:", { tierListName, items });
+      alert("Tier list is valid and ready to be saved!");
+    } else if (items.length === 0) {
+      alert("Please upload at least one item.");
+    } else {
+      alert("Please fix the highlighted items before saving.");
+    }
   }
 
   const categoryOptions = categoryInput
     .split(",")
-    .map((cat) => cat.trim()) // Remove extra whitespace
+    .map((cat) => cat.trim()) 
     .filter((cat) => cat);
 
   return (
@@ -269,16 +294,19 @@ export default function CreateNewTierListPage() {
               src={URL.createObjectURL(item.image)}
               alt={item.name || "Uploaded item"}
               onClick={() => handleItemClick(item)}
-              className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all ${
-                selectedItem?.id === item.id
-                  ? "border-2 border-white"
-                  : "border-2 border-transparent"
+              className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
+                
+                  selectedItem?.id === item.id
+                  ? "border-white"  
+                  : validationErrors.includes(item.id)
+                  ? "border-red-500" 
+                  : "border-transparent" 
               } ${
-                item?.name != "" &&
-                (item?.category != "" || categoryInput == "") &&
-                selectedItem?.id != item.id
-                  ? "brightness-30"
-                  : "brightnes-100"
+                item?.name.trim() !== "" &&
+                (item?.category || categoryInput.trim() === "") &&
+                selectedItem?.id !== item.id
+                  ? "brightness-50 border-transparent"
+                  : "brightness-100"
               }`}
             />
           ))}
