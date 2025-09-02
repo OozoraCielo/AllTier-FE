@@ -8,7 +8,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 * ![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
 * ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
 * ![Tailwind CSS](https://img.shields.io/badge/tailwindcss-%2306B6D4.svg?style=for-the-badge&logo=tailwindcss&logoColor=white)
-
+* ![Docker](https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white)
+* ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
+* ![Amplitude](https://img.shields.io/badge/Amplitude-0050FF?style=for-the-badge&logo=amplitude&logoColor=white)
 
 ## Getting started
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
@@ -33,8 +35,13 @@ Follow these instructions to get a copy of the project up and running on your lo
     # Example
     NEXT_PUBLIC_AMPLITUDE_API_KEY=yourSuperSecretKeyGoesHere
     ```
-    You can generate ```ACCESS_TOKEN_SECRET_KEY``` and ```REFRESH_JWT_SECRET``` via:
+    You can get the API KEY for Amplitude. 
     
+### Usage
+```
+npm run dev -- -p 4000
+```
+
 
 ## Supported Language
 This application is only supported in English.
