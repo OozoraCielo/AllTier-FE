@@ -2,7 +2,11 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 
 # AllTier - Frontend
 
+A revamp of TierMaker.
+---
+
 ## About AllTier
+[Write a short paragraph explaining the project in more detail. What was your motivation? What problem does it solve? What makes it interesting?]
 
 ## 🛠️ Built With
 * ![Next.js](https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white)
@@ -40,12 +44,15 @@ Follow these instructions to get a copy of the project up and running on your lo
     ```
     You can get the API KEY for Amplitude. 
     
-### Usage
+---
+
+## ▶️ How to Run
 Run the frontend using:
 ```
 npm run dev -- -p 4000
 ```
 
+In development, the application fully work if the docker container is active. 
 
 ## Supported Language
 This application is only supported in English.
@@ -54,6 +61,7 @@ This application is only supported in English.
 
 ### Top Contributors
 
+---
 ## Acknowledgements
 
 ## Contact
