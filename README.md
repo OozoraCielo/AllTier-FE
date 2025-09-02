@@ -38,6 +38,7 @@ Follow these instructions to get a copy of the project up and running on your lo
     You can get the API KEY for Amplitude. 
     
 ### Usage
+Run the frontend using:
 ```
 npm run dev -- -p 4000
 ```
