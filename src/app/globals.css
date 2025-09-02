@@ -5,9 +5,17 @@
 
 /* @import "tailwindcss/components"; */
 
-.text-header {
+.text-header-white {
   font-size: xx-large;
   color: rgb(234, 234, 234);
+  font-family: "Exo 2", sans-serif;
+  font-weight: 700;
+  font-style: normal;
+}
+
+.text-header-black {
+  font-size: xx-large;
+  color: black;
   font-family: "Exo 2", sans-serif;
   font-weight: 700;
   font-style: normal;
@@ -126,6 +134,30 @@
   cursor: pointer;
 }
 
+.button-like-gray{
+  background: #302F38;
+  border-radius: 12px;
+  height: 40px;
+  width: 288px;
+  font-size: medium;
+  color: rgb(234, 234, 234);
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.button-gray-disabled{
+  background: #000000;
+  border-radius: 12px;
+  height: 40px;
+  width: 288px;
+  font-size: medium;
+  color: rgb(234, 234, 234);
+  font-family: "Roboto Condensed", sans-serif;
+  font-weight: 400;
+  font-style: normal;
+}
+
 .button-blue{
   background: #507BAE;
   border-radius: 12px;
@@ -145,4 +177,26 @@
 
 .button-blue:hover {
   filter: brightness(80%);
+}
+
+.red-tier {
+  background-color: #AE5050;
+}
+.orange-tier {
+  background-color: #AE7F50;
+}
+.yellow-tier {
+  background-color: #AEA450;
+}
+.green-tier {
+  background-color: #64AE50;
+}
+.blue-tier {
+  background-color: #50AEAC;
+}
+.blue2-tier {
+  background-color: #5077AE;
+}
+.purple-tier {
+  background-color: #6E50AE;
 }

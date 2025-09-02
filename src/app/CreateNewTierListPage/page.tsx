@@ -3,6 +3,13 @@
 import { useRef, useState } from "react";
 import TierListItem from "../tierListItem";
 import Image from "next/image";
+import { CreateNewTierListParam } from "@/api/tierList/createTierList";
+import { api } from "@/api/apiClient";
+
+export async function uploadFile(file: File): Promise<string> {
+  console.log(`Using placeholder for ${file.name}.`);
+  return Promise.resolve('/wuwa.jpg');
+}
 
 interface Item {
   id: number;
@@ -19,9 +26,9 @@ export default function CreateNewTierListPage() {
   const [items, setItems] = useState<Item[]>([]);
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
   const [validationErrors, setValidationErrors] = useState<number[]>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const nextId = useRef(1);
-
   const fileInputRef = useRef<HTMLInputElement>(null);
   const itemsInputRef = useRef<HTMLInputElement>(null);
 
@@ -112,31 +119,62 @@ export default function CreateNewTierListPage() {
     setSelectedItem(null);
   }
 
-  function handleSubmit() {
-    setSelectedItem(null)
+  async function handleSubmit() {
+    setSelectedItem(null);
     const errors: number[] = [];
     items.forEach((item) => {
-      const isNameMissing = !item.name.trim();
-
-      const isCategoryMissing =
-        tierListType === "Rating" &&
-        categoryInput.trim() !== "" &&
-        !item.category;
-
-      if (isNameMissing || isCategoryMissing) {
-        errors.push(item.id);
-      }
+      if (!item.name.trim()) errors.push(item.id);
     });
-
     setValidationErrors(errors);
 
-    if (errors.length === 0 && items.length > 0) {
-      console.log("Submitting tier list:", { tierListName, items });
-      alert("Tier list is valid and ready to be saved!");
-    } else if (items.length === 0) {
-      alert("Please upload at least one item.");
-    } else {
-      alert("Please fix the highlighted items before saving.");
+    if (!thumbnail) {
+        alert("Please upload a thumbnail for the tier list.");
+        return;
+    }
+    if (items.length === 0) {
+        alert("Please upload at least one item.");
+        return;
+    }
+    if (errors.length > 0) {
+        alert("Please fill in the names for all items before saving.");
+        return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      const thumbnailUrlPromise = uploadFile(thumbnail);
+      const itemImagePromises = items.map(item => uploadFile(item.image));
+      
+      const [uploadedThumbnailUrl, ...uploadedItemImageUrls] = await Promise.all([
+        thumbnailUrlPromise, 
+        ...itemImagePromises
+      ]);
+      
+      const categories = categoryInput.split(",").map(cat => cat.trim()).filter(Boolean);
+      
+      const params: CreateNewTierListParam = {
+        tierListName,
+        tierListType,
+        // thumbnailUrl: uploadedThumbnailUrl,
+        thumbnailUrl: 'wuwa.jpg',
+        categories,
+        items: items.map((item, index) => ({
+          itemName: item.name,
+          category: item.category || null,
+          thumbnailUrl: 'wuwa.jpg',
+        })),
+      };
+
+      console.log("Sending data to backend:", params);
+      await api.createNewTierList(params);
+
+      alert("Tier list created successfully!");
+      
+    } catch (error) {
+      console.error("Failed to create tier list:", error);
+      alert("An error occurred while saving the tier list. Please try again.");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -147,7 +185,7 @@ export default function CreateNewTierListPage() {
 
   return (
     <div className="h-full w-full px-5 lg:px-15">
-      <p className="text-header text-center">Create New Tier List</p>
+      <p className="text-header-white text-center">Create New Tier List</p>
 
       <div className="card-gray-big-padding mt-4">
         <p className="text-normal-white">How to create a new tier list?</p>
@@ -178,7 +216,7 @@ export default function CreateNewTierListPage() {
       </div>
 
       <div className="flex flex-col mt-8 items-center">
-        <div className="flex flex-col sm:flex-row">
+        <div className="flex flex-col md:flex-row">
           <div className="flex flex-col">
             <input
               type="text"
@@ -200,11 +238,11 @@ export default function CreateNewTierListPage() {
               Upload Thumbnail
             </button>
           </div>
-          <div className="card-gray-small-padding ml-0 sm:ml-4 mt-4 sm:mt-0 w-72 sm:w-56 h-22 sm:h-24 text-normal-white">
+          <div className="card-gray-small-padding ml-0 md:ml-4 mt-4 md:mt-0 w-72 md:w-56 h-22 md:h-24 text-normal-white">
             <p className="text-center">Tier List Type:</p>
 
-            <div className="flex flex-row sm:flex-col items-center mt-4 sm:mt-2">
-              <div className="flex ml-10 sm:ml-0.5 ">
+            <div className="flex flex-row md:flex-col items-center mt-4 md:mt-2">
+              <div className="flex ml-10 md:ml-0.5 ">
                 <input
                   id="rating"
                   name="tierListType"
@@ -249,7 +287,7 @@ export default function CreateNewTierListPage() {
           <textarea
             placeholder="Enter categories, separated by commas..."
             rows={4}
-            className="p-2 focus:outline-none text-normal-black h-20 w-72 sm:w-[530px] bg-white rounded-xl mt-4"
+            className="p-2 focus:outline-none text-normal-black h-20 w-72 md:w-[530px] bg-white rounded-xl mt-4"
             onChange={(e) => setCategoryInput(e.target.value)}
           ></textarea>
         )}
@@ -262,6 +300,7 @@ export default function CreateNewTierListPage() {
               name: tierListName,
               type: tierListType,
               itemCount: "0",
+              likeCount: "0",
               ratingCount: "0",
               commentCount: "0",
               thumbnail: thumbnail || "/wuwa.jpg",
@@ -278,7 +317,7 @@ export default function CreateNewTierListPage() {
         accept="image/*"
         className="hidden"
       />
-      <div className="flex w-full justify-center sm:justify-start">
+      <div className="flex w-full justify-center md:justify-start">
       <button
         className="button-gray mt-20"
         onClick={uploadItemImages}
@@ -286,7 +325,7 @@ export default function CreateNewTierListPage() {
         Upload Item Images
       </button>
       </div>
-      <div className="flex flex-col sm:flex-row items-center sm:justify-center sm:items-start">
+      <div className="flex flex-col md:flex-row items-center md:justify-center md:items-start">
         <div className="card-gray-big-padding w-full grow min-h-36 flex items-center mt-4 flex-wrap gap-4">
           {items.map((item) => (
             <img
@@ -311,7 +350,7 @@ export default function CreateNewTierListPage() {
             />
           ))}
         </div>
-        <div className="card-gray-big-padding mt-4 h-auto w-72 ml-0 sm:ml-4 shrink-0">
+        <div className="card-gray-big-padding mt-4 h-auto w-92 ml-0 md:ml-4 shrink-0">
           {selectedItem ? (
             <div className="flex flex-col items-center gap-4 w-full">
               <div className="w-full flex justify-between items-center mb-2">
@@ -328,9 +367,9 @@ export default function CreateNewTierListPage() {
               <Image
                 src={URL.createObjectURL(selectedItem.image)}
                 alt={selectedItem.name || "Selected item"}
-                width={128}
-                height={128}
-                className="h-32 w-32 object-cover rounded-lg"
+                width={200}
+                height={200}
+                className="h-56 w-56 object-cover rounded-lg"
               />
               <input
                 type="text"
@@ -387,8 +426,10 @@ export default function CreateNewTierListPage() {
           )}
         </div>
       </div>
-      <div className="flex w-full mt-8 justify-center sm:justify-end">
-        <button className="button-blue" onClick={handleSubmit}>Save Tier List</button>
+      <div className="flex w-full mt-8 justify-center md:justify-end">
+        <button className="button-blue" onClick={handleSubmit} disabled={isSubmitting}>
+          {isSubmitting ? 'Saving...' : 'Save Tier List'}
+        </button>
       </div>
     </div>
   );

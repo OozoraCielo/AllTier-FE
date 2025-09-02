@@ -1,11 +1,14 @@
+import formatNumber from "@/utils/formatNumberUtil";
 import Image from "next/image";
 import Link from "next/link";
+import { FaHeart } from "react-icons/fa";
 
 type TierItemData = {
   id: number;
   name: string;
   type: string;
   itemCount: string;
+  likeCount: string;
   ratingCount: string;
   commentCount: string;
   thumbnail: string | File;
@@ -23,9 +26,9 @@ export default function TierListItem({ item }: TierListItemProps) {
   return (
     <Link
       href={`/ViewTierListPage/${item.id}`}
-      className="card-gray-small-padding w-44 sm:w-56 flex flex-col hover:brightness-90 transition-colors cursor-pointer"
+      className="card-gray-small-padding w-44 md:w-56 flex flex-col hover:brightness-90 transition-colors cursor-pointer"
     >
-      <div className="relative w-full h-26 sm:h-36 mb-2">
+      <div className="relative w-full h-26 md:h-36 mb-2">
         <Image 
           src={imageUrl} 
           alt={`${item.name} thumbnail`}
@@ -35,15 +38,20 @@ export default function TierListItem({ item }: TierListItemProps) {
         />
         <div className="flex flex-col bg-[rgba(0,0,0,0.7)] absolute rounded-sm bottom-0 right-0 p-1 leading-tight">
           <div className="flex flex-row items-center">
-            <p className="text-normal-white mr-auto">{item.itemCount}</p>
+            <p className="text-sub-white mr-auto">{formatNumber(item.itemCount)}</p>
             <img alt="item count" src="/icons/ic_item.webp" className="h-3 w-3 ml-1"/>
           </div>
           <div className="flex flex-row items-center">
-            <p className="text-normal-white mr-auto">{item.ratingCount}</p>
+            <p className="text-sub-white mr-auto">{formatNumber(item.likeCount)}</p>
+            <FaHeart className="h-3 w-3 text-white ml-1" />
+            {/* <img alt="rating count" src="/icons/ic_heart.webp" className="h-3 w-3 ml-1"/> */}
+          </div>
+          <div className="flex flex-row items-center">
+            <p className="text-sub-white mr-auto">{formatNumber(item.ratingCount)}</p>
             <img alt="rating count" src="/icons/ic_rating.webp" className="h-3 w-3 ml-1"/>
           </div>
           <div className="flex flex-row items-center">
-            <p className="text-normal-white mr-auto">{item.commentCount}</p>
+            <p className="text-sub-white mr-auto">{formatNumber(item.commentCount)}</p>
             <img alt="comment count" src="/icons/ic_comment.webp" className="h-3 w-3 ml-1"/>
           </div>
         </div>

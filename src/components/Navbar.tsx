@@ -16,7 +16,7 @@ export default function Navbar({ color }: NavbarProps) {
 
   return (
     <nav
-      className="shadow-md rounded-b-4xl text-header3-black flex justify-between items-center p-2 sm:px-20 relative"
+      className="shadow-md rounded-b-4xl text-header3-black flex justify-between items-center p-2 md:px-20 relative"
       style={{
         backgroundColor: color,
         transition: "background-color 5s ease-in-out",
@@ -33,7 +33,7 @@ export default function Navbar({ color }: NavbarProps) {
       </div>
 
       {/* Right Items */}
-      <div className="hidden sm:flex items-center space-x-6">
+      <div className="hidden md:flex items-center space-x-6">
         <div className="bg-[rgba(255,255,255,0.5)] h-10 w-56 rounded-xl">
           <input
             type="text"
@@ -51,14 +51,14 @@ export default function Navbar({ color }: NavbarProps) {
         {user ? (
           <>
             <Link
-              href="/profile"
+              href="/ProfilePage"
               className="hover:text-gray-800 transition-colors"
             >
               <FaUser />
             </Link>
             <button
               onClick={logout}
-              className="hover:text-gray-800 transition-colors"
+              className="hover:text-gray-800 transition-colors cursor-pointer"
               title="Logout"
             >
               <IoLogOutOutline size={28} />
@@ -75,14 +75,21 @@ export default function Navbar({ color }: NavbarProps) {
       </div>
 
       {/* Mobile Menu */}
-      <div className="sm:hidden mr-1">
-        <button onClick={() => setIsMenuOpen(!isMenuOpen)}>
+      <div className="md:hidden mr-1 flex flex-row">
+        <div className="bg-[rgba(255,255,255,0.5)] h-10 w-56 rounded-xl mr-4">
+          <input
+            type="text"
+            placeholder="Search..."
+            className="p-2 w-full bg-transparent focus:outline-none"
+          />
+        </div>
+        <button onClick={() => setIsMenuOpen(!isMenuOpen)} className="cursor-pointer">
           {isMenuOpen ? <FiX size={28} /> : <FiMenu size={28} />}
         </button>
       </div>
-      
+
       {isMenuOpen && (
-        <div className="sm:hidden absolute top-full right-2 mt-2 w-56 rounded-xl shadow-lg p-4 z-20"
+        <div className="md:hidden absolute top-full right-2 mt-2 w-56 rounded-xl shadow-lg p-4 z-20 cursor-pointer"
         style={{
         backgroundColor: color,
         transition: "background-color 5s ease-in-out",
@@ -99,7 +106,7 @@ export default function Navbar({ color }: NavbarProps) {
             {user ? (
               <>
                 <Link
-                  href="/profile"
+                  href="/ProfilePage"
                   className="hover:text-gray-800 transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                 >
@@ -110,7 +117,7 @@ export default function Navbar({ color }: NavbarProps) {
                     logout();
                     setIsMenuOpen(false);
                   }}
-                  className="text-left hover:text-gray-800 transition-colors"
+                  className="text-left hover:text-gray-800 transition-colors  cursor-pointer"
                 >
                   Logout
                 </button>

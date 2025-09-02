@@ -61,7 +61,7 @@ const [error, setError] = useState<string | null>(null);
           onChange={(e) => setPassword(e.target.value)}
         ></input>
 
-        <div className="flex w-full mt-8 justify-center sm:justify-end">
+        <div className="flex w-full mt-8 justify-center md:justify-end">
           <button className="button-blue" type="submit">
             Login
           </button>

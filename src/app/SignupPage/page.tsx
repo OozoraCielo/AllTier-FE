@@ -87,7 +87,7 @@ export default function SignupPage() {
             required
           />
 
-          <div className="flex w-full mt-8 justify-center sm:justify-end">
+          <div className="flex w-full mt-8 justify-center md:justify-end">
             <button type="submit" className="button-blue">
               Sign up
             </button>

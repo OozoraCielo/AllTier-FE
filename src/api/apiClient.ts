@@ -7,6 +7,7 @@ import {
 } from '@/utils/authUtil';
 import { SignupParam, SignupResp } from './auth/signupParam';
 import { LoginParam, LoginResp } from './auth/loginParam';
+import { CreateNewTierListParam } from './tierList/createTierList';
 
 const apiClient = axios.create({
   baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/',
@@ -21,7 +22,7 @@ apiClient.interceptors.request.use(config => {
   return config;
 });
 
-/*
+
 let isRefreshing = false;
 interface FailedQueuePromise {
   resolve: (value: unknown) => void;
@@ -41,16 +42,13 @@ const processQueue = (error: unknown, token = null) => {
   failedQueue = [];
 };
 
-// Interceptor 2: Handle token expiration and refreshing
 apiClient.interceptors.response.use(
   response => response,
   async error => {
     const originalRequest = error.config;
 
-    // Check if the error is 401 and it's not a retry request
     if (error.response?.status === 401 && !originalRequest._retry) {
       if (isRefreshing) {
-        // If we are already refreshing, queue the request to be retried later
         return new Promise(function (resolve, reject) {
           failedQueue.push({ resolve, reject });
         })
@@ -68,15 +66,14 @@ apiClient.interceptors.response.use(
 
       const refreshToken = getRefreshTokenFromCookie();
       if (!refreshToken) {
-        // No refresh token, redirect to login
-        window.location.href = '/login';
+        window.location.href = '/LoginPage';
         return Promise.reject(error);
       }
 
       try {
         const { data } = await axios.post(
           `${process.env.NEXT_PUBLIC_API_URL}/auth/regenerateTokens`,
-          {}, // Your refresh endpoint might not need a body
+          {},
           { headers: { Authorization: `Bearer ${refreshToken}` } }
         );
 
@@ -102,11 +99,12 @@ apiClient.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-*/
+
 
 
 export const api = {
 
+  //Auth Api
   signup: async (params: SignupParam): Promise<SignupResp> => {
     const response = await apiClient.post<SignupResp>('/auth/signup', params);
     return response.data;
@@ -119,6 +117,12 @@ export const api = {
 
   logout: async (): Promise<any> => {
     const response = await apiClient.post<any>('/auth/logout');
+    return response.data;
+  },
+
+  //Tier List Api
+  createNewTierList: async (params: CreateNewTierListParam): Promise<any> => {
+    const response = await apiClient.post<any>('/tierlists/create-tier-list', params);
     return response.data;
   },
 
