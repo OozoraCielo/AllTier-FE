@@ -11,6 +11,9 @@ This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-
 * ![Docker](https://img.shields.io/badge/docker-%232496ED.svg?style=for-the-badge&logo=docker&logoColor=white)
 * ![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white)
 * ![Amplitude](https://img.shields.io/badge/Amplitude-0050FF?style=for-the-badge&logo=amplitude&logoColor=white)
+* ![TypeScript](https://img.shields.io/badge/typescript-%233178C6.svg?style=for-the-badge&logo=typescript&logoColor=white)
+* ![PostgreSQL](https://img.shields.io/badge/postgresql-%234169E1.svg?style=for-the-badge&logo=postgresql&logoColor=white)
+* ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=JSON%20web%20tokens&logoColor=white)
 
 ## Getting started
 Follow these instructions to get a copy of the project up and running on your local machine for development and testing purposes.
