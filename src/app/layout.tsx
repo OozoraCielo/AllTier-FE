@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import AppShell from "@/components/AppShell"; // Import the new client component
+import AmplitudeProvider from "@/components/AmplitudeProvider";
 import { AuthProvider } from "@/components/AuthProvider";
 
 // Now you can safely export metadata because this is a Server Component.
@@ -21,11 +22,13 @@ export default function RootLayout({
         {/* The shell provides the interactive background/navbar, */}
         {/* while the {children} can still be Server Components. */}
          <AuthProvider>
-        <AppShell>
-          <div className="mt-10">
-         {children}
-         </div>
-          </AppShell>
+            <AmplitudeProvider>
+              <AppShell>
+                 <div className="mt-10">
+                  {children}
+                </div>
+              </AppShell>
+            </AmplitudeProvider>
           </AuthProvider>
       </body>
     </html>
