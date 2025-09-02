@@ -92,7 +92,7 @@ export default function TierListsComponent() {
     },  ];
 
   return (
-    <div className="h-full w-full flex flex-row flex-wrap gap-6 mt-4 justify-center">
+    <div className="h-full w-full flex flex-row flex-wrap gap-3 md:gap-6 mt-4 justify-center">
       {tierListData.map((item) => (
         <TierListItem key={item.id} item={item} />
       ))}

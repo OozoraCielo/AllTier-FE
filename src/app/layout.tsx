@@ -22,7 +22,9 @@ export default function RootLayout({
         {/* while the {children} can still be Server Components. */}
          <AuthProvider>
         <AppShell>
+          <div className="mt-10">
          {children}
+         </div>
           </AppShell>
           </AuthProvider>
       </body>

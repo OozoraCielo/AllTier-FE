@@ -2,29 +2,10 @@
 import React from "react";
 import { ChangeEvent, useState } from "react";
 
-interface Item {
-  itemId: string;
-  itemName: string;
-  tierList: string;
-  category?: string;
-  itemPhoto: string;
-  tier: string;
-  averageRating: string;
-  ratingCount: string;
-}
+import { Item } from "@/types";
+import ViewTierListAll from "@/app/ViewTierListPage/ViewTierListAll";
 
-interface Tier {
-  name: string;
-  colorClass: string;
-}
-
-interface TierListProps {
-  items: Item[];
-  selectedItem: Item | null;
-  handleItemClick: (item: Item) => void;
-}
-
-export default function TierListRatingPage() {
+export default function ViewTierListRatingPage() {
   const tierList = {
     tierListId: "1",
     tierListName: "Testing Tier List",
@@ -40,7 +21,7 @@ export default function TierListRatingPage() {
     categories: ["Dps", "Sub-Dps", "Support"],
   };
 
-  const items = [
+  const items: Item[] = [
     {
       itemId: "1",
       itemName: "test1",
@@ -193,59 +174,10 @@ export default function TierListRatingPage() {
     },
   ];
 
-  const tierConfig: Tier[] = [
-  { name: 'S', colorClass: 'red-tier' },
-  { name: 'A', colorClass: 'orange-tier' },
-  { name: 'B', colorClass: 'yellow-tier' },
-  { name: 'C', colorClass: 'green-tier' },
-  { name: 'D', colorClass: 'blue-tier' },
-  { name: 'E', colorClass: 'blue2-tier' },
-  { name: 'F', colorClass: 'purple-tier' },
-];
-
-const TierList: React.FC<TierListProps> = ({ items, selectedItem, handleItemClick }) => {
-  return (
-    <div className="card-gray-big-padding w-full grow min-h-36 flex flex-col mt-4 flex-wrap gap-4">
-      {tierConfig.map((tier, index) => (
-        <React.Fragment key={tier.name}>
-          <div className="flex flex-row">
-            <div className={`min-h-24 h-fill w-24 ${tier.colorClass} rounded-lg flex flex-col items-center justify-center text-header-white shrink-0`}>
-              {tier.name}
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items
-                .filter(item => item.tier === tier.name)
-                .map((item) => (
-                  <img
-                    key={item.itemId}
-                    src={item.itemPhoto}
-                    alt={item.itemName || "Uploaded item"}
-                    onClick={() => handleItemClick(item)}
-                    className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                      selectedItem?.itemId === item.itemId
-                        ? "border-white"
-                        : "border-transparent"
-                    }`}
-                  />
-                ))}
-            </div>
-          </div>
-          {index < tierConfig.length - 1 && (
-            <div className="h-0.5 bg-gray-500"></div>
-          )}
-        </React.Fragment>
-      ))}
-    </div>
-  );
-};
-
   const [selectedItem, setSelectedItem] = useState<Item | null>(null);
-
   const [isChecked, setIsChecked] = useState(false);
 
-  // 2. Define a handler to toggle the state
   const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-    // event.target.checked is now safely typed as a boolean
     setIsChecked(event.target.checked);
   };
 
@@ -258,13 +190,16 @@ const TierList: React.FC<TierListProps> = ({ items, selectedItem, handleItemClic
   }
 
   return (
-    <div className="h-full w-full px-5 lg:px-15">
+    <div className="h-full w-full px-1 lg:px-15">
       <p className="text-header-white text-center">{tierList.tierListName}</p>
-      <div className="flex flex-row gap-4 mt-4">
+      <div className="flex flex-col md:flex-row gap-4 mt-4 items-center">
         <button className="button-gray-disabled">View Tier List</button>
+
         <button className="button-gray">Give Rating</button>
+
         <div className="button-like-gray flex flex-row items-center justify-center gap-x-2">
           <p>By Category</p>
+
           <input
             type="checkbox"
             checked={isChecked}
@@ -275,184 +210,45 @@ const TierList: React.FC<TierListProps> = ({ items, selectedItem, handleItemClic
       </div>
 
       <div className="flex flex-col md:flex-row items-center md:justify-center md:items-start">
-        {/* Tier List Box All */}
-          {/* S Tier */}
-          {/* <div className="flex flex-row">
-            <div className="min-h-24 h-fill w-24 red-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              S
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "S").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+        <ViewTierListAll
+          items={items}
+          selectedItem={selectedItem}
+          handleItemClick={handleItemClick}
+        />
 
-          <div className="h-0.5 bg-gray-500"></div> */}
-
-          {/* A Tier */}
-          {/* <div className="flex flex-row">
-            <div className="min-h-24 h-fill w-24 orange-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              A
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "A").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="h-0.5 bg-gray-500"></div> */}
-
-          {/* B Tier */}
-          {/* <div className="flex flex-row">
-            <div className="min-h-24 h-fill w-24 yellow-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              B
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "B").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="h-0.5 bg-gray-500"></div> */}
-
-          {/* C Tier */}
-          {/* <div className="flex flex-row">
-            <div className="h-fill w-24 green-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              C
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "C").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="h-0.5 bg-gray-500"></div> */}
-
-          {/* D Tier */}
-          {/* <div className="flex flex-row">
-            <div className="min-h-24 h-fill w-24 blue-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              D
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "D").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="h-0.5 bg-gray-500"></div> */}
-
-          {/* E Tier */}
-          {/* <div className="flex flex-row">
-            <div className="min-h-24 h-fill w-24 blue2-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              E
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "E").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-
-          <div className="h-0.5 bg-gray-500"></div> */}
-
-          {/* F Tier */}
-          {/* <div className="flex flex-row">
-            <div className="min-h-24 h-fill w-24 purple-tier rounded-lg flex flex-col items-center justify-center text-header-white shrink-0">
-              F
-            </div>
-            <div className="flex flex-row gap-4 ml-4 flex-wrap">
-              {items.filter(item => item.tier === "F").map((item) => (
-                <img
-                  key={item.itemId}
-                  src={item.itemPhoto}
-                  alt={item.itemName || "Uploaded item"}
-                  onClick={() => handleItemClick(item)}
-                  className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${
-                    selectedItem?.itemId === item.itemId
-                      ? "border-white"
-                      : "border-transparent"
-                  }`}
-                />
-              ))}
-            </div>
-          </div> */}
-
-          <TierList
-    items={items}
-    selectedItem={selectedItem}
-    handleItemClick={handleItemClick}
-  />
-
-        {/* Item Feedback */}
-        <div className="card-gray-big-padding mt-4 h-auto w-92 ml-0 md:ml-4 shrink-0">
-          <p className="text-normal-white text-center items-center">
+        <div className="card-gray-big-padding mt-4 h-auto w-72 md:w-92 ml-0 md:ml-4 shrink-0">
+          {/* <p className="text-normal-white text-center items-center">
             Click an item to view its feedback
-          </p>
+          </p> */}
+          {selectedItem ? (
+            <div className="flex flex-col items-center gap-4 w-full">
+              <div className="w-full flex justify-between items-center mb-2">
+                <p className="text-normal-white font-semibold">
+                  Item Details
+                </p>
+              </div> 
+              <div className="flex flex-row items-start gap-4">
+                <img
+                  src={selectedItem.itemPhoto}
+                  alt={selectedItem.itemName || "Selected item"}
+                  width={100}
+                  height={100}
+                  className="h-42 w-42 object-cover rounded-lg"
+                />
+                <div className="flex flex-col justify-center my-auto">
+                <p className="text-header3-white">{selectedItem.itemName}</p>
+                <p className="text-normal-white">Tier: {selectedItem.tier}</p>
+                <p className="text-normal-white">Category: {selectedItem.category}</p>
+                <p className="text-normal-white">Average Rating: {selectedItem.averageRating}</p>
+                <p className="text-normal-white">Rating Count: {selectedItem.ratingCount}</p>
+                </div>
+              </div>
+            </div>
+          ) : (
+            <p className="text-normal-white text-center items-center">
+              Click an image to view its details and feedbacks
+            </p>
+          )}
         </div>
       </div>
     </div>

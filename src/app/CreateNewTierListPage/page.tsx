@@ -184,7 +184,7 @@ export default function CreateNewTierListPage() {
     .filter((cat) => cat);
 
   return (
-    <div className="h-full w-full px-5 lg:px-15">
+    <div className="h-full w-full px-1 lg:px-15">
       <p className="text-header-white text-center">Create New Tier List</p>
 
       <div className="card-gray-big-padding mt-4">
@@ -350,7 +350,7 @@ export default function CreateNewTierListPage() {
             />
           ))}
         </div>
-        <div className="card-gray-big-padding mt-4 h-auto w-92 ml-0 md:ml-4 shrink-0">
+        <div className="card-gray-big-padding mt-4 h-auto w-72 md:w-92 ml-0 md:ml-4 shrink-0">
           {selectedItem ? (
             <div className="flex flex-col items-center gap-4 w-full">
               <div className="w-full flex justify-between items-center mb-2">

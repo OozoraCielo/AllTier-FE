@@ -26,7 +26,7 @@ export default function TierListItem({ item }: TierListItemProps) {
   return (
     <Link
       href={`/ViewTierListPage/${item.id}`}
-      className="card-gray-small-padding w-44 md:w-56 flex flex-col hover:brightness-90 transition-colors cursor-pointer"
+      className="card-gray-small-padding w-34 md:w-56 flex flex-col hover:brightness-90 transition-colors cursor-pointer"
     >
       <div className="relative w-full h-26 md:h-36 mb-2">
         <Image 

@@ -46,7 +46,7 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="h-full w-full px-5 lg:px-15 flex flex-row items-center mt-20">
+    <div className="h-full w-full px-1 lg:px-15 flex flex-row items-center mt-20">
       <div className="card-gray-big-padding w-72 mx-auto">
         <p className="text-header2-white">Sign up</p>
 

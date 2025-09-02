@@ -16,7 +16,7 @@ export default function Navbar({ color }: NavbarProps) {
 
   return (
     <nav
-      className="shadow-md rounded-b-4xl text-header3-black flex justify-between items-center p-2 md:px-20 relative"
+      className="shadow-md rounded-b-4xl w-full text-header3-black flex justify-between items-center p-2 md:px-20 z-50 fixed"
       style={{
         backgroundColor: color,
         transition: "background-color 5s ease-in-out",
@@ -34,7 +34,7 @@ export default function Navbar({ color }: NavbarProps) {
 
       {/* Right Items */}
       <div className="hidden md:flex items-center space-x-6">
-        <div className="bg-[rgba(255,255,255,0.5)] h-10 w-56 rounded-xl">
+        <div className="bg-[rgba(255,255,255,0.5)] h-10 w-44 md:w-56  rounded-xl">
           <input
             type="text"
             placeholder="Search..."
@@ -76,7 +76,7 @@ export default function Navbar({ color }: NavbarProps) {
 
       {/* Mobile Menu */}
       <div className="md:hidden mr-1 flex flex-row">
-        <div className="bg-[rgba(255,255,255,0.5)] h-10 w-56 rounded-xl mr-4">
+        <div className="bg-[rgba(255,255,255,0.5)] h-10 w-44 md:w-56 rounded-xl mr-4">
           <input
             type="text"
             placeholder="Search..."

@@ -40,7 +40,7 @@ const [error, setError] = useState<string | null>(null);
   };
 
   return (
-    <div className="h-full w-full px-5 lg:px-15 flex flex-row items-center mt-20">
+    <div className="h-full w-full px-2 lg:px-15 flex flex-row items-center mt-52">
       <div className="card-gray-big-padding w-72 mx-auto">
         <p className="text-header2-white">Login</p>
 
