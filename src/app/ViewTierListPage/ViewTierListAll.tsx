@@ -26,7 +26,7 @@ const ViewTierListAll: React.FC<TierListProps> = ({ items, selectedItem, handleI
                 .map((item) => (
                   <img
                     key={item.itemId}
-                    src={item.itemPhoto}
+                    src={item.itemImage}
                     alt={item.itemName || "Uploaded item"}
                     onClick={() => handleItemClick(item)}
                     className={`h-24 w-24 object-cover rounded-lg cursor-pointer hover:brightness-90 transition-all border-2 ${

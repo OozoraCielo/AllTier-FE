@@ -1,7 +1,7 @@
 export interface CreateNewTierListParam {
   tierListName: string;
   tierListType: string;
-  thumbnailUrl: string;
+  tierListThumbnail: File;
   categories: string[];
   items: Item[];
 }
@@ -9,5 +9,5 @@ export interface CreateNewTierListParam {
 interface Item{
     itemName: string;
     category: string | null;
-    thumbnailUrl: string;
+    itemImage: File;
 }

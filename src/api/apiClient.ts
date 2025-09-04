@@ -121,8 +121,21 @@ export const api = {
   },
 
   //Tier List Api
-  createNewTierList: async (params: CreateNewTierListParam): Promise<any> => {
-    const response = await apiClient.post<any>('/tierlists/create-tier-list', params);
+  getAllTierList: async (): Promise<any> => {
+    const response = await apiClient.get<any>('/tierlists/all-tier-lists');
+    return response.data;
+  },
+
+  createNewTierList: async (formData: FormData): Promise<any> => {
+    const response = await apiClient.post<any>(
+      '/tierlists/create-tier-list', 
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
     return response.data;
   },
 

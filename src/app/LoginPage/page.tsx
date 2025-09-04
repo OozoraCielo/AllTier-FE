@@ -53,7 +53,8 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="h-full w-full px-2 lg:px-15 flex flex-row items-center mt-52">
+    // <div className="h-full w-full px-2 lg:px-15 flex flex-row items-center mt-52">
+<div className="h-[calc(100vh-6rem)] w-full px-2 lg:px-15 flex flex-row items-center">
       <div className="card-gray-big-padding w-72 mx-auto">
         <p className="text-header2-white">Login</p>
 
@@ -94,6 +95,9 @@ export default function LoginPage() {
           </Link>
         </div>
       </div>
+      <img src={"/alltier_logo_black_no_color.webp"} className="w-1/3 -z-10 absolute -left-1/12 -bottom-1/12 mt-auto opacity-20"></img>
+            <img src={"/alltier_logo_black_no_color.webp"} className="w-1/3 -z-10 absolute -right-1/12 -bottom-1/12 mt-auto opacity-20 rotate-270"></img>
+
     </div>
   );
 }

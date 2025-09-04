@@ -11,6 +11,8 @@ export async function uploadFile(file: File): Promise<string> {
   return Promise.resolve('/wuwa.jpg');
 }
 
+
+
 interface Item {
   id: number;
   image: File;
@@ -119,7 +121,67 @@ export default function CreateNewTierListPage() {
     setSelectedItem(null);
   }
 
+  // async function handleSubmit() {
+  //   setSelectedItem(null);
+  //   const errors: number[] = [];
+  //   items.forEach((item) => {
+  //     if (!item.name.trim()) errors.push(item.id);
+  //   });
+  //   setValidationErrors(errors);
+
+  //   if (!thumbnail) {
+  //       alert("Please upload a thumbnail for the tier list.");
+  //       return;
+  //   }
+  //   if (items.length === 0) {
+  //       alert("Please upload at least one item.");
+  //       return;
+  //   }
+  //   if (errors.length > 0) {
+  //       alert("Please fill in the names for all items before saving.");
+  //       return;
+  //   }
+
+  //   setIsSubmitting(true);
+  //   try {
+  //     // const thumbnailUrlPromise = uploadFile(thumbnail);
+  //     // const itemImagePromises = items.map(item => uploadFile(item.image));
+      
+  //     // const [uploadedThumbnailUrl, ...uploadedItemImageUrls] = await Promise.all([
+  //     //   thumbnailUrlPromise, 
+  //     //   ...itemImagePromises
+  //     // ]);
+      
+  //     const categories = categoryInput.split(",").map(cat => cat.trim()).filter(Boolean);
+      
+  //     const params: CreateNewTierListParam = {
+  //       tierListName,
+  //       tierListType,
+  //       tierListThumbnail: thumbnail,
+  //       // thumbnailUrl: 'wuwa.jpg',
+  //       categories,
+  //       items: items.map((item, index) => ({
+  //         itemName: item.name,
+  //         category: item.category || null,
+  //         itemImage: item.image,
+  //       })),
+  //     };
+
+  //     console.log("Sending data to backend:", params);
+  //     await api.createNewTierList(params);
+
+  //     alert("Tier list created successfully!");
+      
+  //   } catch (error) {
+  //     console.error("Failed to create tier list:", error);
+  //     alert("An error occurred while saving the tier list. Please try again.");
+  //   } finally {
+  //     setIsSubmitting(false);
+  //   }
+  // }
+
   async function handleSubmit() {
+    // 1. Run all validations first
     setSelectedItem(null);
     const errors: number[] = [];
     items.forEach((item) => {
@@ -142,33 +204,36 @@ export default function CreateNewTierListPage() {
 
     setIsSubmitting(true);
     try {
-      const thumbnailUrlPromise = uploadFile(thumbnail);
-      const itemImagePromises = items.map(item => uploadFile(item.image));
-      
-      const [uploadedThumbnailUrl, ...uploadedItemImageUrls] = await Promise.all([
-        thumbnailUrlPromise, 
-        ...itemImagePromises
-      ]);
-      
-      const categories = categoryInput.split(",").map(cat => cat.trim()).filter(Boolean);
-      
-      const params: CreateNewTierListParam = {
-        tierListName,
-        tierListType,
-        // thumbnailUrl: uploadedThumbnailUrl,
-        thumbnailUrl: 'wuwa.jpg',
-        categories,
-        items: items.map((item, index) => ({
-          itemName: item.name,
-          category: item.category || null,
-          thumbnailUrl: 'wuwa.jpg',
-        })),
-      };
+      // 2. Create a FormData object to handle file uploads
+      const formData = new FormData();
 
-      console.log("Sending data to backend:", params);
-      await api.createNewTierList(params);
+      // 3. Append all the different types of data
+      formData.append('tierListName', tierListName);
+      formData.append('tierListType', tierListType);
+      formData.append('tierListThumbnail', thumbnail);
+
+      // Convert arrays to a JSON string before appending
+      const categories = categoryInput.split(",").map(cat => cat.trim()).filter(Boolean);
+      formData.append('categories', JSON.stringify(categories));
+
+      // Separate item metadata (text) from item images (files)
+      const itemMetadata = items.map(item => ({
+        itemName: item.name,
+        category: item.category || null,
+      }));
+      formData.append('items', JSON.stringify(itemMetadata));
+      
+      // Append each file under the same key to create a file array
+      items.forEach(item => {
+        formData.append('itemImages', item.image);
+      });
+
+      // 4. Send the complete FormData object to the backend
+      await api.createNewTierList(formData);
 
       alert("Tier list created successfully!");
+      // Optionally, redirect the user after success
+      // router.push('/some-success-page');
       
     } catch (error) {
       console.error("Failed to create tier list:", error);
@@ -176,7 +241,7 @@ export default function CreateNewTierListPage() {
     } finally {
       setIsSubmitting(false);
     }
-  }
+}
 
   const categoryOptions = categoryInput
     .split(",")
@@ -296,14 +361,14 @@ export default function CreateNewTierListPage() {
           <TierListItem
             key={1}
             item={{
-              id: 1,
-              name: tierListName,
-              type: tierListType,
+              tierListId: "1",
+              tierListName: tierListName,
+              tierListType: tierListType,
               itemCount: "0",
               likeCount: "0",
               ratingCount: "0",
               commentCount: "0",
-              thumbnail: thumbnail || "/wuwa.jpg",
+              tierListThumbnailUrl: "/wuwa.jpg",
             }}
           />
         </div>

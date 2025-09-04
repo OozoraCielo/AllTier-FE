@@ -1,17 +1,18 @@
+import { GetAllTierListResp } from "@/api/tierList/getAllTierList";
 import formatNumber from "@/utils/formatNumberUtil";
 import Image from "next/image";
 import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 
 type TierItemData = {
-  id: number;
-  name: string;
-  type: string;
+  tierListId: string;
+  tierListName: string;
+  tierListType: string;
   itemCount: string;
   likeCount: string;
   ratingCount: string;
   commentCount: string;
-  thumbnail: string | File;
+  tierListThumbnailUrl: string;
 };
 
 interface TierListItemProps {
@@ -19,19 +20,19 @@ interface TierListItemProps {
 }
 
 export default function TierListItem({ item }: TierListItemProps) {
-    const imageUrl = typeof item.thumbnail === 'string'
-    ? item.thumbnail
-    : URL.createObjectURL(item.thumbnail);
+    // const imageUrl = typeof item.thumbnail === 'string'
+    // ? item.thumbnail
+    // : URL.createObjectURL(item.thumbnail);
 
   return (
     <Link
-      href={`/ViewTierListPage/${item.id}`}
+      href={`/ViewTierListPage/${item.tierListId}`}
       className="card-gray-small-padding w-34 md:w-56 flex flex-col hover:brightness-90 transition-colors cursor-pointer"
     >
       <div className="relative w-full h-26 md:h-36 mb-2">
         <Image 
-          src={imageUrl} 
-          alt={`${item.name} thumbnail`}
+          src={item.tierListThumbnailUrl} 
+          alt={`${item.tierListName} thumbnail`}
           layout="fill"
           objectFit="cover"
           className="rounded-md"
@@ -58,8 +59,8 @@ export default function TierListItem({ item }: TierListItemProps) {
       </div>
 
       <div className="flex flex-col flex-grow">
-        <h3 className="text-header2-white mb-1 truncate">{item.name}</h3>
-        <p className="text-sub-white">Type: {item.type}</p>
+        <h3 className="text-header2-white mb-1 truncate">{item.tierListName}</h3>
+        <p className="text-sub-white">Type: {item.tierListType}</p>
       </div>
     </Link>
   );

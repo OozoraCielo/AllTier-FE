@@ -3,7 +3,7 @@ export interface Item {
   itemName: string;
   tierList: string;
   category?: string;
-  itemPhoto: string;
+  itemImage: string;
   tier: string;
   averageRating: string;
   ratingCount: string;
@@ -18,4 +18,10 @@ export interface TierListProps {
   items: Item[];
   selectedItem: Item | null;
   handleItemClick: (item: Item) => void;
+}
+
+export interface User{
+  userId: string;
+  username: string;
+  tokenVersion: string;
 }
