@@ -8,9 +8,11 @@ const REFRESH_TOKEN_KEY = 'refreshToken';
  * The shape of the data decoded from the JWT access token.
  */
 export interface DecodedToken {
-  sub: number; // Subject (usually the user ID)
-  username: string;
+  id: string;          // <-- add this
+  email: string;       // <-- optional, but useful
   tokenVersion: number;
+  iat: number;
+  exp: number;
 }
 
 const cookieOptions = {
