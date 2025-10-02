@@ -54,7 +54,7 @@ export default function LoginClient() {
       setError("Invalid username or password. Please try again.");
 
       // 🔥 Track failed login attempt
-      amplitude.track("Login Failed", {
+      amplitude.track("Failed Login", {
         login_failed_username_or_email: usernameEmail,
         login_error: err instanceof Error ? err.message : "Unknown error"
       });
