@@ -5,6 +5,7 @@ import { useState } from "react";
 import { FaUser } from "react-icons/fa";
 import { IoLogOutOutline } from "react-icons/io5";
 import { FiMenu, FiX } from "react-icons/fi";
+import * as amplitude from '@amplitude/analytics-browser';
 
 interface NavbarProps {
   color: string;
@@ -57,7 +58,16 @@ export default function Navbar({ color }: NavbarProps) {
               <FaUser />
             </Link>
             <button
-              onClick={logout}
+              data-amplitude-label="Navbar Logout"
+              onClick={() => {
+                  amplitude.track("Logout", {
+                    location: "Navbar Desktop",
+                    button_text: "Logout Button",
+                    user_id: user?.id, // if you have it in your auth context
+                  });
+                  logout();
+                }
+              }
               className="hover:text-gray-800 transition-colors cursor-pointer"
               title="Logout"
             >
